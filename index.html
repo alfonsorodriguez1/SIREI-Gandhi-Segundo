@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIREI · Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a3a5c">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="logo-wrap">
+        <svg class="sirei-logo" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="sireiGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a5a8a"/>
+              <stop offset="1" stop-color="#0f2440"/>
+            </linearGradient>
+          </defs>
+          <circle cx="70" cy="70" r="66" fill="url(#sireiGrad)"/>
+          <circle cx="70" cy="70" r="66" fill="none" stroke="#e8b830" stroke-width="3"/>
+          <circle cx="70" cy="70" r="57" fill="none" stroke="#e8b830" stroke-width="1.2" opacity="0.55"/>
+          <path d="M40 58 L70 46 L100 58 L70 70 Z" fill="#e8b830"/>
+          <path d="M95 62 L95 72" stroke="#f8fafc" stroke-width="3"/>
+          <path d="M75 71 L62 84" stroke="#f8fafc" stroke-width="3"/>
+          <circle cx="60" cy="86" r="3.5" fill="#f8fafc"/>
+          <path d="M50 78 C50 70 62 70 70 74 C78 70 90 70 90 78 L90 92 C78 86 62 86 50 92 Z" fill="#ffffff"/>
+          <path d="M70 74 L70 89" stroke="#0f2440" stroke-width="1.6"/>
+          <path d="M33 70 C40 66 60 66 70 74" fill="none" stroke="#e8b830" stroke-width="2.4" opacity="0.9"/>
+          <path d="M33 76 C46 72 66 72 70 78" fill="none" stroke="#e8b830" stroke-width="2.4" opacity="0.9"/>
+        </svg>
+        <img id="loginLogo" src="" alt="" style="display:none" />
+        <h1>SIREI</h1>
+        <span>Sistema de retroalimentación educativa inmediata</span>
+      </div>
+
+      <!-- Vista de acceso -->
+      <div id="loginView">
+        <div class="sub">Ingresa con tus credenciales</div>
+
+        <div id="loginError" class="error-msg">
+          <i class="fas fa-exclamation-circle"></i> <span id="errorText">Credenciales incorrectas</span>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username"><i class="fas fa-user"></i> Usuario</label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" id="username" placeholder="Ej. juan.perez" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" placeholder="••••••••" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="captcha"><i class="fas fa-shield-halved"></i> Captcha</label>
+            <div class="captcha-row">
+              <span class="captcha-operacion"><span id="captchaA">?</span> + <span id="captchaB">?</span> =</span>
+              <div class="input-wrap captcha-input-wrap">
+                <input type="text" id="captcha" inputmode="numeric" placeholder="Resultado" autocomplete="off" required />
+              </div>
+              <button type="button" class="captcha-refresh" id="captchaRefresh" title="Nuevo captcha">
+                <i class="fas fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <i class="fas fa-arrow-right-to-bracket"></i>
+            <span>Entrar</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Vista de cambio de contraseña (primer acceso) -->
+      <div id="changePasswordView" style="display:none">
+        <div class="sub">Bienvenido · Configura tu contraseña</div>
+        <div class="notice-info">
+          Por ser tu primer acceso, necesitas crear una contraseña nueva.
+          Debe tener mínimo 8 caracteres, con al menos una mayúscula, una minúscula, un número y un carácter especial.
+        </div>
+
+        <div id="changePasswordError" class="error-msg">
+          <i class="fas fa-exclamation-circle"></i> <span id="changePasswordErrorText">Error</span>
+        </div>
+
+        <form id="changePasswordForm">
+          <div class="form-group">
+            <label for="newPassword"><i class="fas fa-lock"></i> Nueva contraseña</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="newPassword" placeholder="••••••••" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmar contraseña</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirmPassword" placeholder="••••••••" required />
+            </div>
+          </div>
+          <ul class="password-requirements" id="passwordRequirements">
+            <li data-req="min">Mínimo 8 caracteres</li>
+            <li data-req="upper">Al menos una mayúscula</li>
+            <li data-req="lower">Al menos una minúscula</li>
+            <li data-req="num">Al menos un número</li>
+            <li data-req="special">Al menos un carácter especial (ej. !@#$%)</li>
+            <li data-req="match">Las contraseñas coinciden</li>
+          </ul>
+          <button type="submit" class="btn-primary" id="changePasswordBtn">
+            <i class="fas fa-key"></i>
+            <span>Guardar y entrar</span>
+          </button>
+        </form>
+      </div>
+
+      <div class="login-footer"><strong>SIREI</strong> · Sistema de retroalimentación educativa inmediata</div>
+    </div>
+  </div>
+
+  <!-- Modal de acceso bloqueado (archivo "Financiero") -->
+  <div id="blockedModal" class="blocked-modal" role="dialog" aria-modal="true" aria-labelledby="blockedModalTitle" aria-describedby="blockedModalDesc">
+    <div class="blocked-modal-card">
+      <div class="blocked-modal-icon"><i class="fas fa-lock"></i></div>
+      <h2 id="blockedModalTitle">Acceso restringido</h2>
+      <p id="blockedModalDesc">
+        Tu acceso al sistema está <strong>suspendido intencionalmente</strong> por el área
+        administrativa / financiera de la institución.
+      </p>
+      <p class="blocked-modal-note">
+        Esto <strong>no</strong> se debe a un error en tu usuario, contraseña o captcha.
+        Si consideras que es una equivocación, acude directamente con la administración
+        de tu escuela para resolverlo.
+      </p>
+      <button type="button" class="btn-primary" id="blockedModalClose">Entendido</button>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('SW no registrado:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

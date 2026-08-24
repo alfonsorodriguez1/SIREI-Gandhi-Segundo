@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIREI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a3a5c">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div id="gandhiPage" class="gandhi-page">
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img id="sidebarLogo" src="" alt="Logo" />
+        <h2>SIREI <small>Sistema de Retroalimentación Educativa Inmediata</small></h2>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-label">Menú Principal</div>
+        <a href="#" class="active nav-student-link" data-panel="inicio"><i class="fas fa-house"></i> Inicio</a>
+        <a href="#" class="nav-student-link" data-panel="asistencias"><i class="fas fa-clipboard-check"></i> Asistencias</a>
+        <a href="#" class="nav-student-link" data-panel="actitudinal"><i class="fas fa-heart"></i> Actitudinal</a>
+        <a href="#" class="nav-student-link" data-panel="academico"><i class="fas fa-graduation-cap"></i> Académico</a>
+        <a href="#" class="nav-student-link" data-panel="resultados"><i class="fas fa-chart-bar"></i> Resultados</a>
+        <a href="#" id="configNavLink" data-panel="configuracion" style="display:none"><i class="fas fa-sliders"></i> Cambiar datos</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <img id="sidebarAvatar" src="" alt="Avatar" />
+          <div class="info">
+            <div class="name" id="sidebarName">Cargando...</div>
+            <div class="role" id="sidebarRole">—</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="topbar">
+        <div class="left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú"><i class="fas fa-bars"></i></button>
+          <h3 id="panelTitle">Inicio</h3>
+        </div>
+        <div class="user-badge">
+          <div class="info">
+            <div class="name" id="topName">—</div>
+            <div class="role" id="topRole">—</div>
+          </div>
+          <img class="avatar" id="topAvatar" src="" alt="Avatar" />
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- PANEL: Inicio -->
+        <section id="panel-inicio" class="panel active">
+          <div class="inicio-grid">
+            <!-- ===== CAMBIO 5: Logo institucional con texto ===== -->
+            <div class="card card-full">
+              <div class="card-title"><i class="fas fa-university"></i> Institución</div>
+              <div class="logo-display">
+                <img id="inicioLogo" src="" alt="Logo institucional" />
+                <div class="logo-text">
+                  <h2>SIREI</h2>
+                  <p>Sistema de Retroalimentación Educativa Inmediata</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== CAMBIO 6: Perfil del alumno (foto más grande, datos abajo) ===== -->
+            <div class="card">
+              <div class="card-title"><i class="fas fa-user-circle"></i> Perfil</div>
+              <div class="student-profile">
+                <img class="photo" id="inicioPhoto" src="" alt="Foto" />
+                <div class="details">
+                  <h2 id="inicioName">—</h2>
+                  <div class="semestre">Semestre: <strong id="inicioSemestre">—</strong></div>
+                  <!-- ===== CAMBIO 7: Nuevo campo "Periodo" ===== -->
+                  <div class="periodo">Periodo: <strong id="inicioPeriodo">—</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== CAMBIO 8: QR con solo el CURP del alumno ===== -->
+            <div class="card" id="qrCard">
+              <div class="card-title"><i class="fas fa-qrcode"></i> Código QR</div>
+              <div class="qr-wrap">
+                <div id="qrcode"></div>
+                <div class="qr-label">Código de entrada</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-asistencias" class="panel">
+          <div class="asistencia-wrap">
+            <!-- Selector de sección -->
+            <div class="asistencia-tabs">
+              <button class="asistencia-tab active" data-seccion="instituto"><i class="fas fa-school"></i> Al instituto</button>
+              <button class="asistencia-tab" data-seccion="clases"><i class="fas fa-chalkboard-user"></i> A las clases</button>
+            </div>
+
+            <!-- Sección 1: Mi asistencia al instituto -->
+            <div class="asistencia-section" id="asistenciaSeccionInstituto">
+              <div class="asistencia-section-head">
+                <i class="fas fa-school"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mi asistencia al instituto</h3>
+                  <p id="asistenciaSubtitle">Consultando tus registros...</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Resumen / stats -->
+                <div id="asistenciaStats" class="asistencia-stats" style="display:none"></div>
+
+                <!-- Carga -->
+                <div id="asistenciaLoading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando registros de asistencia...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="asistenciaError" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="asistenciaErrorMsg">No se pudieron cargar los registros.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="asistenciaEmpty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin registros</h3>
+                  <p id="asistenciaEmptyText">No encontramos asistencias registradas para tu CURP.</p>
+                </div>
+
+                <!-- Lista de días -->
+                <div id="asistenciaList" class="asistencia-list"></div>
+              </div>
+            </div>
+
+            <!-- Sección 2: Mi asistencia a las clases -->
+            <div class="asistencia-section" id="asistenciaSeccionClases" style="display:none">
+              <div class="asistencia-section-head">
+                <i class="fas fa-chalkboard-user"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mi asistencia a las clases</h3>
+                  <p>Selecciona una materia para ver tus registros.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Selector de asignatura -->
+                <div id="asistenciaClasesChips" class="asignatura-chips"></div>
+
+                <!-- Carga -->
+                <div id="asistenciaClasesLoading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando tus registros de clases...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="asistenciaClasesError" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="asistenciaClasesErrorMsg">No se pudieron cargar los registros de clases.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="asistenciaClasesEmpty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin registros</h3>
+                  <p id="asistenciaClasesEmptyText">No encontramos registros de asistencia a clases para ti.</p>
+                </div>
+
+                <!-- Detalle de la asignatura elegida -->
+                <div id="asistenciaClasesDetail" class="asistencia-clases-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="panel-actitudinal" class="panel">
+          <div class="actitudinal-wrap">
+            <!-- Selector de sección -->
+            <div class="actitudinal-tabs">
+              <button class="actitudinal-tab active" data-seccion="registros"><i class="fas fa-face-smile"></i> Registros actitudinales</button>
+              <button class="actitudinal-tab" data-seccion="insignias"><i class="fas fa-medal"></i> Insignias</button>
+            </div>
+
+            <!-- Sección 1: Registros actitudinales -->
+            <div class="actitudinal-section" id="actRegistrosSeccion">
+              <div class="asistencia-section-head">
+                <i class="fas fa-face-smile"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mis registros actitudinales</h3>
+                  <p>Selecciona una materia para ver tus registros.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Selector de asignatura -->
+                <div id="actRegistrosChips" class="asignatura-chips"></div>
+
+                <!-- Carga -->
+                <div id="actRegistrosLoading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando tus registros actitudinales...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="actRegistrosError" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="actRegistrosErrorMsg">No se pudieron cargar los registros.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="actRegistrosEmpty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin registros</h3>
+                  <p id="actRegistrosEmptyText">No encontramos registros actitudinales para ti.</p>
+                </div>
+
+                <!-- Detalle de la asignatura elegida -->
+                <div id="actRegistrosDetail" class="actitudinal-registros-list"></div>
+              </div>
+            </div>
+
+            <!-- Sección 2: Insignias -->
+            <div class="actitudinal-section" id="actInsigniasSeccion" style="display:none">
+              <div class="asistencia-section-head">
+                <i class="fas fa-medal"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mis insignias</h3>
+                  <p>Tu progreso hacia cada insignia.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Carga -->
+                <div id="actInsigniasLoading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando tus insignias...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="actInsigniasError" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="actInsigniasErrorMsg">No se pudieron cargar las insignias.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="actInsigniasEmpty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin insignias</h3>
+                  <p id="actInsigniasEmptyText">No encontramos insignias definidas.</p>
+                </div>
+
+                <!-- Rejilla de insignias -->
+                <div id="actInsigniasGrid" class="insignias-grid"></div>
+
+                <!-- Retroalimentación de negativas -->
+                <div id="actNegativasBlock" class="negativas-block" style="display:none">
+                  <div class="negativas-head">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <div>
+                      <h4>Registros negativos</h4>
+                      <p>Estos son tus registros actitudinales negativos. Invita a mantenerlos al mínimo.</p>
+                    </div>
+                  </div>
+                  <div id="actNegativasList" class="negativas-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="panel-academico" class="panel">
+          <div class="actitudinal-wrap">
+            <!-- Selector de bimestre -->
+            <div class="actitudinal-tabs">
+              <button class="actitudinal-tab active" data-bimestre="1"><i class="fas fa-list-check"></i> Bimestre 1</button>
+              <button class="actitudinal-tab" data-bimestre="2"><i class="fas fa-list-check"></i> Bimestre 2</button>
+            </div>
+
+            <!-- Sección Bimestre 1 -->
+            <div class="actitudinal-section" id="acadBimestre1Seccion">
+              <div class="asistencia-section-head">
+                <i class="fas fa-list-check"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mis evidencias · Bimestre 1</h3>
+                  <p>Selecciona una materia para ver tus registros.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Selector de asignatura -->
+                <div id="acadB1Chips" class="asignatura-chips"></div>
+
+                <!-- Carga -->
+                <div id="acadB1Loading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando tus evidencias del bimestre 1...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="acadB1Error" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="acadB1ErrorMsg">No se pudieron cargar los registros.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="acadB1Empty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin registros</h3>
+                  <p id="acadB1EmptyText">No encontramos evidencias para ti en este bimestre.</p>
+                </div>
+
+                <!-- Detalle de la asignatura elegida -->
+                <div id="acadB1Detail" class="academico-registros-list"></div>
+              </div>
+            </div>
+
+            <!-- Sección Bimestre 2 -->
+            <div class="actitudinal-section" id="acadBimestre2Seccion" style="display:none">
+              <div class="asistencia-section-head">
+                <i class="fas fa-list-check"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Mis evidencias · Bimestre 2</h3>
+                  <p>Selecciona una materia para ver tus registros.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Selector de asignatura -->
+                <div id="acadB2Chips" class="asignatura-chips"></div>
+
+                <!-- Carga -->
+                <div id="acadB2Loading" class="asistencia-loading">
+                  <div class="spinner-lg"></div>
+                  <p>Cargando tus evidencias del bimestre 2...</p>
+                </div>
+
+                <!-- Error -->
+                <div id="acadB2Error" class="asistencia-error" style="display:none">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  <p id="acadB2ErrorMsg">No se pudieron cargar los registros.</p>
+                </div>
+
+                <!-- Sin datos -->
+                <div id="acadB2Empty" class="asistencia-empty" style="display:none">
+                  <i class="fas fa-inbox"></i>
+                  <h3>Sin registros</h3>
+                  <p id="acadB2EmptyText">No encontramos evidencias para ti en este bimestre.</p>
+                </div>
+
+                <!-- Detalle de la asignatura elegida -->
+                <div id="acadB2Detail" class="academico-registros-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="panel-resultados" class="panel">
+          <div class="resultados-wrap">
+            <div class="asistencia-section-head">
+              <i class="fas fa-chart-bar"></i>
+              <div class="asistencia-section-head-text">
+                <h3>Mis resultados finales</h3>
+                <p>Calificaciones de tus asignaturas en este semestre.</p>
+              </div>
+            </div>
+            <div class="asistencia-section-body">
+              <!-- Carga -->
+              <div id="resultadosLoading" class="asistencia-loading">
+                <div class="spinner-lg"></div>
+                <p>Cargando tus resultados...</p>
+              </div>
+
+              <!-- Error -->
+              <div id="resultadosError" class="asistencia-error" style="display:none">
+                <i class="fas fa-triangle-exclamation"></i>
+                <p id="resultadosErrorMsg">No se pudieron cargar los resultados.</p>
+              </div>
+
+              <!-- Sin datos -->
+              <div id="resultadosEmpty" class="asistencia-empty" style="display:none">
+                <i class="fas fa-inbox"></i>
+                <h3>Sin resultados</h3>
+                <p id="resultadosEmptyText">Aún no encontramos calificaciones para ti.</p>
+              </div>
+
+              <!-- Tabla de resultados -->
+              <div id="resultadosTableWrap" class="resultados-table-wrap" style="display:none">
+                <table class="resultados-table">
+                  <thead id="resultadosThead"></thead>
+                  <tbody id="resultadosTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== CAMBIO 9: Panel de configuración (solo administrador) ===== -->
+        <section id="panel-configuracion" class="panel">
+          <div class="config-wrap">
+            <div class="asistencia-section">
+              <div class="asistencia-section-head">
+                <i class="fas fa-sliders"></i>
+                <div class="asistencia-section-head-text">
+                  <h3>Cambiar datos de origen</h3>
+                  <p>Configura de dónde debe leer la aplicación su información.</p>
+                </div>
+              </div>
+              <div class="asistencia-section-body">
+                <!-- Paso 1: advertencia + contraseña -->
+                <div id="configLock">
+                  <div class="notice-info config-warning">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <div>
+                      <strong>Aviso importante antes de continuar</strong><br>
+                      Al cambiar estos parámetros, toda la aplicación dejará de leer la información
+                      actual y usará los archivos que indiques. Verifica que los archivos nuevos tengan
+                      la misma estructura y que el enlace de Apps Script tenga acceso a ellos.
+                      Después de guardar deberás <strong>volver a iniciar sesión</strong>.
+                    </div>
+                  </div>
+                  <form id="configUnlockForm">
+                    <div class="form-group">
+                      <label for="configPassword"><i class="fas fa-lock"></i> Confirma tu contraseña</label>
+                      <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="configPassword" placeholder="Contraseña de tu cuenta" autocomplete="off" required />
+                      </div>
+                    </div>
+                    <div id="configUnlockError" class="error-msg">
+                      <i class="fas fa-exclamation-circle"></i> <span id="configUnlockErrorText">Contraseña incorrecta</span>
+                    </div>
+                    <button type="submit" class="btn-primary" id="configUnlockBtn">
+                      <i class="fas fa-key"></i> <span>Verificar y continuar</span>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Paso 2: parámetros de origen -->
+                <div id="configForm" style="display:none">
+                  <div class="form-group">
+                    <label for="configApiUrl"><i class="fas fa-globe"></i> Enlace de la aplicación web (Apps Script)</label>
+                    <div class="input-wrap">
+                      <i class="fas fa-globe"></i>
+                      <input type="text" id="configApiUrl" placeholder="https://script.google.com/macros/s/.../exec" spellcheck="false" autocomplete="off" />
+                    </div>
+                    <small class="field-hint">Enlace /exec de la implementación de Apps Script de esta escuela.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="configAdminId"><i class="fas fa-file-shield"></i> Hoja administrador (ID)</label>
+                    <div class="input-wrap">
+                      <i class="fas fa-file-shield"></i>
+                      <input type="text" id="configAdminId" placeholder="ID de la hoja administrador" spellcheck="false" autocomplete="off" />
+                    </div>
+                    <small class="field-hint">Alumnos, asignaturas, credenciales, logo y elementos visibles.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="configChecadorId"><i class="fas fa-clock-rotate-left"></i> Hoja checador (ID)</label>
+                    <div class="input-wrap">
+                      <i class="fas fa-clock-rotate-left"></i>
+                      <input type="text" id="configChecadorId" placeholder="ID de la hoja checador" spellcheck="false" autocomplete="off" />
+                    </div>
+                    <small class="field-hint">Registros de entrada/salida de la escuela.</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="configFinancieroId"><i class="fas fa-hand-holding-dollar"></i> Hoja financiero (ID)</label>
+                    <div class="input-wrap">
+                      <i class="fas fa-hand-holding-dollar"></i>
+                      <input type="text" id="configFinancieroId" placeholder="ID de la hoja financiero" spellcheck="false" autocomplete="off" />
+                    </div>
+                    <small class="field-hint">Define los usuarios cuyo acceso estará restringido.</small>
+                  </div>
+                  <div id="configSaveMsg" class="config-save-msg"></div>
+                  <div class="config-actions">
+                    <button type="button" class="btn-primary" id="configSaveBtn">
+                      <i class="fas fa-save"></i> <span>Guardar y volver a iniciar sesión</span>
+                    </button>
+                    <button type="button" class="btn-secondary" id="configCancelBtn">
+                      <i class="fas fa-rotate-left"></i> Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías y scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('SW no registrado:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
